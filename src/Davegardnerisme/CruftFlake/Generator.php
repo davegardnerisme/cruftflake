@@ -86,8 +86,10 @@ class Generator
     }
     
     /**
+     * Generate ID
      *
-     * @return type 
+     * @return string A 64 bit integer as a string of numbers (so we can deal
+     *      with this on 32 bit platforms) 
      */
     public function generate()
     {
@@ -104,11 +106,26 @@ class Generator
         }
         $this->sequence++;
         
-        if (PHP_INT_SIZE == 4) {
+        if (PHP_INT_SIZE === 4) {
             return $this->mintId32($t, $this->machine, $this->sequence);
         } else {
             return $this->mintId64($t, $this->machine, $this->sequence);
         }
+    }
+    
+    /**
+     * Get stats
+     *
+     * @return array
+     */
+    public function status()
+    {
+        return array(
+            'machine'   => $this->machine,
+            'lastTime'  => $this->lastTime,
+            'sequence'  => $this->sequence,
+            'is32Bit'   => (PHP_INT_SIZE === 4)
+            );
     }
     
     private function mintTime()

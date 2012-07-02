@@ -38,6 +38,7 @@ class ZkConfig implements ConfigInterface
                     );
         }
         $this->zk = new \Zookeeper($hostnames);
+        $this->parentPath = $zkPath;
     }
     
     /**
@@ -47,16 +48,41 @@ class ZkConfig implements ConfigInterface
      */
     public function getMachine()
     {
-        return 1;
-        
         $this->createParentIfNeeded($this->parentPath);
         
         // get current machine list
         $children = $this->zk->getChildren($this->parentPath);
-
-        // find 
         
-
+        // find an unused machine number
+        for ($i=0; $i<1024; $i++) {
+            $machineNode = $this->machineToNode($i);
+            if (in_array($machineNode, $children)) {
+                continue;   // already used
+            }
+            
+            // attempt to claim
+            $created = $this->zk->create(
+                    "{$this->parentPath}/{$machineNode}",
+                    '<add mac address here and perhaps IP etc>',
+                    array(array(                    // acl
+                        'perms'     => \Zookeeper::PERM_ALL,
+                        'scheme'    => 'world',
+                        'id'        => 'anyone'
+                        )),
+                    \Zookeeper::EPHEMERAL
+                    );
+            if ($created !== NULL) {
+                break;
+            }
+        }
+        
+        if ($created === NULL) {
+            throw new \RuntimeException(
+                    "Cannot locate and claim a free machine ID via ZK"
+                    );
+        }
+        
+        return (int)$i;
     }
     
     /**
@@ -64,10 +90,10 @@ class ZkConfig implements ConfigInterface
      * 
      * @param string $nodePath
      */
-    private function createParentIfNeeded()
+    private function createParentIfNeeded($nodePath)
     {
         if (!$this->zk->exists($nodePath)) {
-            $zk->create(
+            $this->zk->create(
                     $nodePath,
                     'Cruftflake machines',
                     array(array(                    // acl
@@ -79,4 +105,15 @@ class ZkConfig implements ConfigInterface
         }
     }
 
+    /**
+     * Machine ID to ZK node
+     * 
+     * @param integer $id
+     * 
+     * @return string The node path to use in ZK
+     */
+    private function machineToNode($id)
+    {
+        return str_pad($id, 4, '0', STR_PAD_LEFT);
+    }
 }

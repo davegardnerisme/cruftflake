@@ -27,9 +27,9 @@ class ZeroMq
      * Constructor
      * 
      * @param @inject Generator $generator
-     * @param string $port Which TCP port to list on, default 80085
+     * @param string $port Which TCP port to list on, default 5599
      */
-    public function __construct(Generator $generator, $port = 80085)
+    public function __construct(Generator $generator, $port = 5599)
     {
         $this->generator = $generator;
         $this->port = $port;
@@ -56,7 +56,7 @@ class ZeroMq
                     $response = $this->generator->generate();
                     break;
                 case 'STATUS':
-                    $response = '@TODO';
+                    $response = json_encode($this->generator->status());
                     break;
                 default:
                     $response = 'UNKNOWN COMMAND';
