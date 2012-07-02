@@ -43,6 +43,13 @@ class Generator
         );
     
     /**
+     * Timer
+     * 
+     * @var TimerInterface
+     */
+    private $timer;
+    
+    /**
      * Configured machine ID - 10 bits (dec 0 -> 1023)
      *
      * @var integer
@@ -74,8 +81,9 @@ class Generator
      * Constructor
      * 
      * @param @inject ConfigInterface $config
+     * @param @inject TimerInterface $timer
      */
-    public function __construct(ConfigInterface $config)
+    public function __construct(ConfigInterface $config, TimerInterface $timer)
     {
         $this->machine = $config->getMachine();
         if (!is_int($this->machine) || $this->machine < 0 || $this->machine > 1023) {
@@ -83,6 +91,7 @@ class Generator
                     'Machine identifier invalid -- must be 10 bit integer (0 to 1023)'
                     );
         }
+        $this->timer = $timer;
     }
     
     /**
@@ -93,7 +102,7 @@ class Generator
      */
     public function generate()
     {
-        $t = $this->mintTime();
+        $t = (int)($this->timer->getUnixTimestamp() - $this->epoch);
         if ($t !== $this->lastTime) {
             if ($t < $this->lastTime) {
                 throw new \UnexpectedValueException(
@@ -126,12 +135,6 @@ class Generator
             'sequence'  => $this->sequence,
             'is32Bit'   => (PHP_INT_SIZE === 4)
             );
-    }
-    
-    private function mintTime()
-    {
-        // Q: will this ever be > 32 bit int?
-        return (int)(microtime(TRUE) * 1000 - $this->epoch);
     }
     
     private function mintId32($timestamp, $machine, $sequence)

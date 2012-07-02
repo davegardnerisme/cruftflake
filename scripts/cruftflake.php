@@ -23,8 +23,9 @@ $classLoader = new \SplClassLoader(
         );
 $classLoader->register();
 
+$timer = new \Davegardnerisme\CruftFlake\Timer;
 $config = new \Davegardnerisme\CruftFlake\ZkConfig('cassandra.devel:2181');
-$generator = new \Davegardnerisme\CruftFlake\Generator($config);
+$generator = new \Davegardnerisme\CruftFlake\Generator($config, $timer);
 $zmqRunner = new \Davegardnerisme\CruftFlake\ZeroMq($generator, $port);
 
 $zmqRunner->run();
