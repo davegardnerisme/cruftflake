@@ -95,6 +95,7 @@ class ZkConfig implements ConfigInterface
                         ))
                     );
             if ($created !== NULL) {
+                $machineId = $i;
                 break;
             }
         }
