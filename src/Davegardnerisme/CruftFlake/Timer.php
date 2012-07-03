@@ -18,6 +18,6 @@ class Timer implements TimerInterface
      */
     public function getUnixTimestamp()
     {
-        return (int)(microtime(TRUE) * 1000);
+        return floor(microtime(TRUE) * 1000);
     }
 }

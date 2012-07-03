@@ -31,6 +31,11 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(ctype_digit($id));
     }
     
+    private function assertReallyNotEquals($v1, $v2)
+    {
+        $this->assertTrue($v1 !== $v2);
+    }
+    
     // ---
     
     public function testConstructs()
@@ -99,8 +104,8 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertId($id2);
         $this->assertId($id3);
         
-        $this->assertNotEquals($id1, $id2);
-        $this->assertNotEquals($id2, $id3);
+        $this->assertReallyNotEquals($id1, $id2);
+        $this->assertReallyNotEquals($id2, $id3);
     }
 
     public function testGenerateAsksForTimeEachTime()
@@ -119,7 +124,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertId($id1);
         $this->assertId($id2);
         
-        $this->assertNotEquals($id1, $id2);
+        $this->assertReallyNotEquals($id1, $id2);
     }
     
     public function testFailsWithTimestampBeforeEpoch()
@@ -215,7 +220,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         
         $this->assertId($id1);
         $this->assertId($id2);
-        $this->assertNotEquals($id1, $id2);
+        $this->assertReallyNotEquals($id1, $id2);
         
         $this->assertEquals(0, $id1);
     }
@@ -232,7 +237,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         
         $this->assertId($id1);
         $this->assertId($id2);
-        $this->assertNotEquals($id1, $id2);
+        $this->assertReallyNotEquals($id1, $id2);
         
         $this->assertEquals(1 << 12, $id1);
         $this->assertEquals(1 << 12 | 1, $id2);
@@ -250,7 +255,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         
         $this->assertId($id1);
         $this->assertId($id2);
-        $this->assertNotEquals($id1, $id2);
+        $this->assertReallyNotEquals($id1, $id2);
         
         $this->assertEquals(1 << 22 | 1 << 12, $id1);
         $this->assertEquals(1 << 22 | 1 << 12 | 1, $id2);
@@ -285,7 +290,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         
         $this->assertId($id1);
         $this->assertId($id2);
-        $this->assertNotEquals($id1, $id2);
+        $this->assertReallyNotEquals($id1, $id2);
         $this->assertEquals('9223372036854771712', $id1);
     }
 }

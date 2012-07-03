@@ -107,7 +107,7 @@ class Generator
      */
     public function generate()
     {
-        $t = (int)($this->timer->getUnixTimestamp() - $this->epoch);
+        $t = floor($this->timer->getUnixTimestamp() - $this->epoch);
         if ($t !== $this->lastTime) {
             if ($t < $this->lastTime) {
                 throw new \UnexpectedValueException(
@@ -159,8 +159,8 @@ class Generator
     
     private function mintId32($timestamp, $machine, $sequence)
     {
-        $hi = (int)($timestamp / pow(2,8));
-        $lo = (int)(($timestamp * pow(2, 22)) & 0xFFFFFFFF);
+        $hi = (int)($timestamp / pow(2,10));
+        $lo = (int)($timestamp * pow(2, 22));
         
         // stick in the machine + sequence to the low bit
         $lo = $lo | ($machine << 12) | $sequence;
@@ -174,6 +174,7 @@ class Generator
     
     private function mintId64($timestamp, $machine, $sequence)
     {
+        $timestamp = (int)$timestamp;
         $value = ($timestamp << 22) | ($machine << 12) | $sequence;
         return (string)$value;
     }
