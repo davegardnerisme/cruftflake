@@ -159,8 +159,8 @@ class Generator
     
     private function mintId32($timestamp, $machine, $sequence)
     {
-        $hi = (int)($timestamp / pow(2,9));
-        $lo = (int)(($timestamp * pow(2, 23)) & 0xFFFFFFFF);
+        $hi = (int)($timestamp / pow(2,8));
+        $lo = (int)(($timestamp * pow(2, 22)) & 0xFFFFFFFF);
         
         // stick in the machine + sequence to the low bit
         $lo = $lo | ($machine << 12) | $sequence;

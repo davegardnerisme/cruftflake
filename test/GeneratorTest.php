@@ -286,5 +286,6 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertId($id1);
         $this->assertId($id2);
         $this->assertNotEquals($id1, $id2);
+        $this->assertEquals('9223372036854771712', $id1);
     }
 }
