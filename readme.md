@@ -5,13 +5,28 @@ but in PHP with a simple ZeroMQ interface (rather than Thrift).
 
 ## Implementation
 
-Has a custom epoch that means it can generate IDs until 2081-09-06.
+This project was motivated by personal curiosity and also my [inability to
+get Twitter's project to build](https://github.com/twitter/snowflake/issues/8).
+
+The implementation copies Twitter - generating 64 bit IDs.
+
+  - time - 41 bits
+  - configured machine ID - 10 bits
+  - sequence number - 12 bits
+
+Has a custom epoch that means it can generate IDs until 2081-09-06 (not the 
+same epoch as Snowflake).
 
 ## Running
 
-Remember to git submodule init. Two scripts provided.
+Git clone and then remember to `git submodule init`. You should run the tests
+to verify things are OK:
 
-1. The generator
+    phpunit --bootstrap test/bootstrap.php test/
+
+There are two scripts provided for playing about with.
+
+1. The generator (the server)
 
     ./scripts/cruftflake.php
 
@@ -19,3 +34,6 @@ Remember to git submodule init. Two scripts provided.
 
     ./scripts/client.php -n 100
 
+Right now this uses some hard-coded configuration for a ZooKeeper cluster.
+The ZooKeeper configuration class uses Ephemeral nodes which are basically a
+bad idea - so that will have to change.
