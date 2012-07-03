@@ -17,6 +17,20 @@ The implementation copies Twitter - generating 64 bit IDs.
 Has a custom epoch that means it can generate IDs until 2081-09-06 (not the 
 same epoch as Snowflake).
 
+### ZooKeeper for config coordination
+
+We use ZooKeeper to store which machine IDs are in use. When a new node starts
+up for the first time it **must** be able to contact the ZooKeeper cluster
+and create a new node. It will look at all the existing nodes and then (if it
+can't find its own Mac Address) attempt to claim a free one.
+
+I was using Ephemeral nodes for this - similar(ish) to a lock pattern but this
+had the issue that the node needed to remain connected to ZK throughout its
+lifetime -- this way it doesn't.
+
+The downside is that potentially the 1024 possible machine IDs will "fill up"
+and need to be manually pruned.
+
 ## Running
 
 Git clone and then remember to `git submodule init`. You should run the tests
