@@ -53,7 +53,11 @@ class ZeroMq
             $msg = $receiver->recv();
             switch ($msg) {
                 case 'GEN':
-                    $response = $this->generator->generate();
+                    try {
+                        $response = $this->generator->generate();
+                    } catch (\Exception $e) {
+                        $response = "ERROR";
+                    }
                     break;
                 case 'STATUS':
                     $response = json_encode($this->generator->status());

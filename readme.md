@@ -3,6 +3,10 @@
 A stab at a version of [Twitter Snowflake](https://github.com/twitter/snowflake)
 but in PHP with a simple ZeroMQ interface (rather than Thrift).
 
+## Implementation
+
+Has a custom epoch that means it can generate IDs until 2081-09-06.
+
 ## Running
 
 Remember to git submodule init. Two scripts provided.

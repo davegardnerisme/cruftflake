@@ -19,6 +19,11 @@ namespace Davegardnerisme\CruftFlake;
 class Generator
 {
     /**
+     * Max timestamp
+     */
+    const MAX_ADJUSTED_TIMESTAMP = 2199023255551;
+    
+    /**
      * Hexdec lookup
      * 
      * @staticvar array
@@ -109,11 +114,26 @@ class Generator
                         'Time moved backwards. We cannot generate IDs for '
                         . ($this->lastTime - $t) . ' milliseconds'
                         );
+            } elseif ($t < 0) {
+                throw new \UnexpectedValueException(
+                        'Time is currently set before our epoch - unable '
+                        . 'to generate IDs for ' . (-$t) . ' milliseconds'
+                        );
+            } elseif ($t > self::MAX_ADJUSTED_TIMESTAMP) {
+                throw new \OverflowException(
+                        'Timestamp overflow (past end of lifespan) - unable to generate any more IDs'
+                        );
             }
             $this->sequence = 0;
             $this->lastTime = $t;
+        } else {
+            $this->sequence++;
+            if ($this->sequence > 4095) {
+                throw new \OverflowException(
+                        'Sequence overflow (too many IDs generated) - unable to generate IDs for 1 milliseconds'
+                        );
+            }
         }
-        $this->sequence++;
         
         if (PHP_INT_SIZE === 4) {
             return $this->mintId32($t, $this->machine, $this->sequence);
@@ -143,7 +163,7 @@ class Generator
         $lo = (int)(($timestamp * pow(2, 23)) & 0xFFFFFFFF);
         
         // stick in the machine + sequence to the low bit
-        $lo = $lo | ($machine << 10) | $sequence;
+        $lo = $lo | ($machine << 12) | $sequence;
 
         // reconstruct into a string of numbers
         $hex = pack('N2', $hi, $lo);
@@ -154,7 +174,7 @@ class Generator
     
     private function mintId64($timestamp, $machine, $sequence)
     {
-        $value = ($timestamp << 23) | ($machine << 10) | $sequence;
+        $value = ($timestamp << 22) | ($machine << 12) | $sequence;
         return (string)$value;
     }
     
