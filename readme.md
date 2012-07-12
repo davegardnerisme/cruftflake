@@ -47,7 +47,3 @@ There are two scripts provided for playing about with.
 2. A client that will generate N IDs and dump to STDOUT
 
     ./scripts/client.php -n 100
-
-Right now this uses some hard-coded configuration for a ZooKeeper cluster.
-The ZooKeeper configuration class uses Ephemeral nodes which are basically a
-bad idea - so that will have to change.
