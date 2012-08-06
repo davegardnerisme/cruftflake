@@ -9,7 +9,7 @@
  *  -z      ZooKeeper hostname:port to connect to, eg: localhost:2181
  */
 
-$opts = getopt('p:');
+$opts = getopt('p:z:');
 $port = isset($opts['p']) ? $opts['p'] : 5599;
 $zks = isset($opts['z']) ? $opts['z'] : 'localhost:2181';
 
