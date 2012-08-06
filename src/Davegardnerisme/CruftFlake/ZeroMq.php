@@ -48,6 +48,7 @@ class ZeroMq
         $context = new \ZMQContext();
         $receiver = new \ZMQSocket($context, \ZMQ::SOCKET_REP);
         $bindTo = 'tcp://*:' . $this->port;
+        echo "Binding to {$bindTo}\n";
         $receiver->bind($bindTo);
         while (TRUE) {
             $msg = $receiver->recv();
