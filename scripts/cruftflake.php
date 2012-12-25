@@ -5,13 +5,13 @@
  * 
  * Usage:
  * 
- *  -p      ZeroMQ port to bind to, default 5599
+ *  -u      ZeroMQ url to bind to, default 'tcp://*:5599'
  *  -z      ZooKeeper hostname:port to connect to, eg: localhost:2181
- *  -m      Specify a particular machine ID
+ *  -m      Specify a particular machine ID (If specified, -z will be ignored)
  */
 
-$opts = getopt('p:z:m:');
-$port = isset($opts['p']) ? $opts['p'] : 5599;
+$opts = getopt('u:z:m:');
+$url = isset($opts['u']) ? $opts['u'] : 'tcp://*:5599';
 $zks = isset($opts['z']) ? $opts['z'] : 'localhost:2181';
 $machine = isset($opts['m']) ? $opts['m'] : NULL;
 
@@ -34,6 +34,6 @@ if ($machine !== NULL) {
     $config = new \Davegardnerisme\CruftFlake\ZkConfig($zks);
 }
 $generator = new \Davegardnerisme\CruftFlake\Generator($config, $timer);
-$zmqRunner = new \Davegardnerisme\CruftFlake\ZeroMq($generator, $port);
+$zmqRunner = new \Davegardnerisme\CruftFlake\ZeroMq($generator, $url);
 
 $zmqRunner->run();

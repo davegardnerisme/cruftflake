@@ -17,22 +17,22 @@ class ZeroMq
     private $generator;
     
     /**
-     * Port
+     * Url
      * 
-     * @var integer
+     * @var string
      */
-    private $port;
+    private $url;
     
     /**
      * Constructor
      * 
      * @param @inject Generator $generator
-     * @param string $port Which TCP port to list on, default 5599
+     * @param string $url to listen on, default 'tcp://*:5599'
      */
-    public function __construct(Generator $generator, $port = 5599)
+    public function __construct(Generator $generator, $url = 'tcp://*:5599')
     {
         $this->generator = $generator;
-        $this->port = $port;
+        $this->url = $url;
     }
     
     /**
@@ -47,9 +47,8 @@ class ZeroMq
     {
         $context = new \ZMQContext();
         $receiver = new \ZMQSocket($context, \ZMQ::SOCKET_REP);
-        $bindTo = 'tcp://*:' . $this->port;
-        echo "Binding to {$bindTo}\n";
-        $receiver->bind($bindTo);
+        echo "Binding to {$this->url}\n";
+        $receiver->bind($this->url);
         while (TRUE) {
             $msg = $receiver->recv();
             switch ($msg) {
