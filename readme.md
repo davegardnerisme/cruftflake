@@ -17,12 +17,16 @@ The implementation copies Twitter - generating 64 bit IDs.
 Has a custom epoch that means it can generate IDs until 2081-09-06 (not the 
 same epoch as Snowflake).
 
-### ZooKeeper for config coordination
+### ZooKeeper for config coordination (optional)
 
-We use ZooKeeper to store which machine IDs are in use. When a new node starts
-up for the first time it **must** be able to contact the ZooKeeper cluster
-and create a new node. It will look at all the existing nodes and then (if it
-can't find its own Mac Address) attempt to claim a free one.
+Each machine **must** have a unique 10 bit machine ID. ZooKeeper can be used
+to keep a list of all registered machine IDs, allowing new machines to
+self-assign a new unique machine ID.
+
+When using ZooKeeper, when a new node starts up for the first time it
+**must** be able to contact the ZooKeeper cluster and create a new node.
+It will look at all the existing nodes and then (if it can't find its
+own Mac Address) attempt to claim a free one.
 
 I was using Ephemeral nodes for this - similar(ish) to a lock pattern but this
 had the issue that the node needed to remain connected to ZK throughout its
@@ -43,6 +47,10 @@ There are two scripts provided for playing about with.
 1. The generator (the server)
 
     ./scripts/cruftflake.php
+    
+Or to specify a manually configured machine ID:
+
+    ./scripts/cruftflake.php -m 1
 
 2. A client that will generate N IDs and dump to STDOUT
 
