@@ -20,8 +20,8 @@ $context = new \ZMQContext();
 $socket = new \ZMQSocket($context, \ZMQ::SOCKET_REQ);
 $socket->connect($url);
 $socket->setSockOpt(\ZMQ::SOCKOPT_LINGER, 0);
-self::$socket->setSockOpt(ZMQ::SOCKOPT_SNDTIMEO, $timeout);
-self::$socket->setSockOpt(ZMQ::SOCKOPT_RCVTIMEO, $timeout);
+$socket->setSockOpt(\ZMQ::SOCKOPT_SNDTIMEO, $timeout);
+$socket->setSockOpt(\ZMQ::SOCKOPT_RCVTIMEO, $timeout);
 
 for ($i=0; $i<$n; $i++) {
     $socket->send('GEN');
