@@ -10,7 +10,7 @@
  *  -t      Send / Receive timeout, default 100ms
  */
 
-$opts = getopt('n:u:');
+$opts = getopt('n:u:t:');
 $n = isset($opts['n']) ? (int)$opts['n'] : 1;
 $n = $n < 0 ? 1 : $n;
 $url = isset($opts['u']) ? $opts['u'] : 'tcp://localhost:5599';

@@ -9,7 +9,7 @@
  *  -t      Send / Receive timeout, default 100ms
  */
 
-$opts = getopt('p:');
+$opts = getopt('u:t:');
 $url = isset($opts['u']) ? $opts['u'] : 'tcp://localhost:5599';
 $timeout = isset($opts['t']) ? (int)$opts['t'] : 100;
 
