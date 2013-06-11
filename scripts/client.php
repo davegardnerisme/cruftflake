@@ -14,14 +14,14 @@ $opts = getopt('n:u:t:');
 $n = isset($opts['n']) ? (int)$opts['n'] : 1;
 $n = $n < 0 ? 1 : $n;
 $url = isset($opts['u']) ? $opts['u'] : 'tcp://localhost:5599';
-$timeout = isset($opts['t']) ? (int)$opts['t'] : 100;
+$timeout = isset($opts['t']) ? (int)$opts['t'] : 1000;
 
 $context = new \ZMQContext();
 $socket = new \ZMQSocket($context, \ZMQ::SOCKET_REQ);
 $socket->connect($url);
 $socket->setSockOpt(\ZMQ::SOCKOPT_LINGER, 0);
-self::$socket->setSockOpt(ZMQ::SOCKOPT_SNDTIMEO, $timeout);
-self::$socket->setSockOpt(ZMQ::SOCKOPT_RCVTIMEO, $timeout);
+$socket->setSockOpt(\ZMQ::SOCKOPT_SNDTIMEO, $timeout);
+$socket->setSockOpt(\ZMQ::SOCKOPT_RCVTIMEO, $timeout);
 
 for ($i=0; $i<$n; $i++) {
     $socket->send('GEN');
