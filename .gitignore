@@ -1,1 +1,8 @@
-nbproject/*
+/vendor
+/nbproject
+composer.lock
+composer.phar
+.DS_Store
+Thumbs.db
+.tags_sorted_by_file
+.tags

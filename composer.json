@@ -1,0 +1,21 @@
+{
+    "authors": [
+        {
+            "name": "Dave Gardner",
+            "email": "dave@davegardner.me.uk"
+        },
+        {
+            "name": "Lucas Vasconcelos",
+            "email": "lucasvscn@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Davegardnerisme\\CruftFlake\\": "src/Davegardnerisme/CruftFlake"
+        }
+    },
+    "require-dev": {
+        "php": ">=5.3.3",
+        "phpunit/phpunit": "~4.4"
+    }
+}
