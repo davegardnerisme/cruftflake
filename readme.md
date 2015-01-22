@@ -52,12 +52,15 @@ There are two examples provided for playing about with.
 
 1. The generator (the server)
 
-    ./example/cruftflake.php
+    ./examples/cruftflake.php
 
 Or to specify a manually configured machine ID:
 
-    ./example/cruftflake.php -m 1
+    ./examples/cruftflake.php -m 1
 
 2. A client that will generate N IDs and dump to STDOUT
 
-    ./example/client.php -n 100
+    ./examples/client.php -n 100
+
+
+Check `/examples/standalone.php` to see how to use it whithout ZooKeeper
