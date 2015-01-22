@@ -1,5 +1,8 @@
 # CruftFlake
 
+[![Build Status](https://api.travis-ci.org/lucasvscn/cruftflake.png)](https://travis-ci.org/lucasvscn/cruftflake)
+[![ProjectStatus](http://stillmaintained.com/lucasvscn/cruftflake.png)](http://stillmaintained.com/lucasvscn/cruftflake)
+
 A stab at a version of [Twitter Snowflake](https://github.com/twitter/snowflake)
 but in PHP with a simple ZeroMQ interface (rather than Thrift).
 
@@ -14,7 +17,7 @@ The implementation copies Twitter - generating 64 bit IDs.
   - configured machine ID - 10 bits
   - sequence number - 12 bits
 
-Has a custom epoch that means it can generate IDs until 2081-09-06 (not the 
+Has a custom epoch that means it can generate IDs until 2081-09-06 (not the
 same epoch as Snowflake).
 
 ### ZooKeeper for config coordination (optional)
@@ -37,21 +40,27 @@ and need to be manually pruned.
 
 ## Running
 
-Git clone and then remember to `git submodule init`. You should run the tests
-to verify things are OK:
+Add it to the `require` key of `composer.json` file
 
-    phpunit --bootstrap test/bootstrap.php test/
+    "vscn/cruftflake": "dev-master"
 
-There are two scripts provided for playing about with.
+Run the Composer update comand
+
+    $ composer update
+
+There are two examples provided for playing about with.
 
 1. The generator (the server)
 
-    ./scripts/cruftflake.php
-    
+    ./examples/cruftflake.php
+
 Or to specify a manually configured machine ID:
 
-    ./scripts/cruftflake.php -m 1
+    ./examples/cruftflake.php -m 1
 
 2. A client that will generate N IDs and dump to STDOUT
 
-    ./scripts/client.php -n 100
+    ./examples/client.php -n 100
+
+
+Check `/examples/standalone.php` to see how to use it whithout ZooKeeper

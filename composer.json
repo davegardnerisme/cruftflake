@@ -1,0 +1,32 @@
+{
+    "name": "vscn/cruftflake",
+    "description": "This package provides a PHP implementation of Twitter Snoflake ID Generator algoritm",
+    "keywords": ["snowflake","ZooKeeper","uuid"],
+    "authors": [
+        {
+            "name": "Dave Gardner",
+            "email": "dave@davegardner.me.uk"
+        },
+        {
+            "name": "Lucas Vasconcelos",
+            "email": "lucasvscn@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Davegardnerisme\\CruftFlake\\": "src/Davegardnerisme/CruftFlake"
+        }
+    },
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.4"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev"
+}
